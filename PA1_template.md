@@ -41,14 +41,14 @@ medianTotSteps <- median(activityDataPerDay$totsteps, na.rm = TRUE)
 The histogram shows the total number of steps per day. The overall mean 
 (**9354 steps**) and 
 median (**10395 steps**) 
-are shown with a horizontal blue/red dashed line.
+are shown with a vertical blue/red dashed line.
 
 
 ```r
-plot(activityDataPerDay$date, activityDataPerDay$totsteps, type = "h",
-     main = "Total Number of Steps per Day", xlab = "", ylab = "Steps")
-abline(h = meanTotSteps, col = "blue", lty = 2)
-abline(h = medianTotSteps, col = "red", lty = 2)
+hist(activityDataPerDay$totsteps, main = "Total Number of Steps per Day", 
+     xlab = "Steps per Day")
+abline(v = meanTotSteps, col = "blue", lty = 2)
+abline(v = medianTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
        legend = c(paste("Mean:", format(meanTotSteps, digits = 0, scientific = FALSE), "steps"), 
                   paste("Median:", format(medianTotSteps, digits = 0, scientific = FALSE), "steps")))
@@ -111,14 +111,14 @@ medianImputedTotSteps <- median(imputedActivityDataPerDay$totsteps)
 The histogram shows the new total number of steps per day. The overall mean 
 (**10766 steps**) and 
 median (**10766 steps**) 
-are again shown with a horizontal blue/red dashed line.
+are again shown with a vertical blue/red dashed line.
 
 
 ```r
-plot(imputedActivityDataPerDay$date, imputedActivityDataPerDay$totsteps, type = "h",
-     main = "Total Number of Steps per Day", xlab = "Day", ylab = "Steps")
-abline(h = meanImputedTotSteps, col = "blue", lty = 2)
-abline(h = medianImputedTotSteps, col = "red", lty = 2)
+hist(imputedActivityDataPerDay$totsteps, main = "Total Number of Steps per Day", 
+     xlab = "Steps per Day")
+abline(v = meanImputedTotSteps, col = "blue", lty = 2)
+abline(v = medianImputedTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
        legend = c(paste("Mean:", format(meanImputedTotSteps, digits = 0, scientific = FALSE), "steps"), 
                   paste("Median:", format(medianImputedTotSteps, digits = 0, scientific = FALSE), "steps")))
@@ -127,28 +127,9 @@ legend("topright", col = c("blue", "red"), lty = 2,
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 If we compare the results with the imputed data with the results of the initial data set, 
-we see that the total number of steps has increased in the first 2 quantiles 
-(being the first half of the day); the reason being (most likely) that data was 
-missing in the nighttime hours.
-
-
-```r
-summary(activityDataPerDay$totsteps)
-```
-
-```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##       0    6778   10395    9354   12811   21194
-```
-
-```r
-summary(imputedActivityDataPerDay$totsteps)
-```
-
-```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##      41    9819   10766   10766   12811   21194
-```
+we see that the total number of steps has decreased in the first 2 bars (0-5000 and 5000-10000 steps).
+The reason being that the missing data is in intervals with little activity and the 
+imputed small numbers lower the total sum.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -190,4 +171,4 @@ with(imputedActivityDataPerIntervalWeekend,
           xlab = "Interval", ylab = "Steps"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->

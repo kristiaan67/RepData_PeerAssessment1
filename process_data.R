@@ -21,8 +21,8 @@ print(summary(activityDataPerDay))
 # Plot a histogram of the number of steps per day
 meanTotSteps <- mean(activityDataPerDay$totsteps)
 medianTotSteps <- median(activityDataPerDay$totsteps)
-plot(activityDataPerDay$date, activityDataPerDay$totsteps, type = "h",
-     main = "Total Number of Steps per Day", xlab = "Day", ylab = "Steps")
+hist(activityDataPerDay$totsteps,
+     main = "Total Number of Steps per Day", xlab = "Steps per Day")
 abline(h = meanTotSteps, col = "blue", lty = 2)
 abline(h = medianTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
