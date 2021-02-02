@@ -26,8 +26,6 @@ if (!file.exists("activity.csv")) {
 activityData <- read.csv("activity.csv")
 activityData <- mutate(activityData,
                        date = ymd(date))
-
-summary(activityData)
 ```
 
 ## What is mean total number of steps taken per day?
@@ -54,8 +52,8 @@ plot(activityDataPerDay$date, activityDataPerDay$totsteps, type = "h",
 abline(h = meanTotSteps, col = "blue", lty = 2)
 abline(h = medianTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
-       legend = c(paste("Mean:", format(meanTotSteps, digits = 0, scientific = FALSE)), 
-                  paste("Median:", format(medianTotSteps, digits = 0, scientific = FALSE))))
+       legend = c(paste("Mean:", format(meanTotSteps, digits = 0, scientific = FALSE), "steps"), 
+                  paste("Median:", format(medianTotSteps, digits = 0, scientific = FALSE), "steps")))
 ```
 
 
@@ -106,10 +104,10 @@ meanImputedTotSteps <- mean(imputedActivityDataPerDay$totsteps)
 medianImputedTotSteps <- median(imputedActivityDataPerDay$totsteps)
 ```
 
-The histogram shows the imputed total number of steps per day. The overall mean 
+The histogram shows the new total number of steps per day. The overall mean 
 (**`r format(meanImputedTotSteps, digits = 0, scientific = FALSE)` steps**) and 
 median (**`r format(medianImputedTotSteps, digits = 0, scientific = FALSE)` steps**) 
-are shown with a horizontal blue/red dashed line.
+are again shown with a horizontal blue/red dashed line.
 
 ```{r}
 plot(imputedActivityDataPerDay$date, imputedActivityDataPerDay$totsteps, type = "h",
@@ -117,13 +115,14 @@ plot(imputedActivityDataPerDay$date, imputedActivityDataPerDay$totsteps, type = 
 abline(h = meanImputedTotSteps, col = "blue", lty = 2)
 abline(h = medianImputedTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
-       legend = c(paste("Mean:", format(meanImputedTotSteps, digits = 0, scientific = FALSE)), 
-                  paste("Median:", format(medianImputedTotSteps, digits = 0, scientific = FALSE))))
+       legend = c(paste("Mean:", format(meanImputedTotSteps, digits = 0, scientific = FALSE), "steps"), 
+                  paste("Median:", format(medianImputedTotSteps, digits = 0, scientific = FALSE), "steps")))
 ```
 
-If we compare the imputed results with the results of the initial data set, 
-we see that the total number of steps has increased in the first 2 quantiles; 
-the reason is (most likely) that data was missing in the nighttime hours.
+If we compare the results with the imputed data with the results of the initial data set, 
+we see that the total number of steps has increased in the first 2 quantiles 
+(being the first half of the day); the reason being (most likely) that data was 
+missing in the nighttime hours.
 
 ```{r}
 summary(activityDataPerDay$totsteps)
@@ -134,8 +133,9 @@ summary(imputedActivityDataPerDay$totsteps)
 
 The compare the activity patterns between weekdays and weekends, a new factor
 variable is added to the data set with values "weekend" / "weekday" (depending
-on whether the day is a weekday or a weekend) and 2 subsets are created, one for
-each factor level.
+on whether the day is a weekday or a weekend). The data is grouped by day and the
+new factor variable and aggregated by averaging the number of steps.
+Finally 2 subsets are created, one for weekdays and one for weekends.
 
 ```{r}
 # add factor variable 

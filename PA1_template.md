@@ -22,19 +22,6 @@ if (!file.exists("activity.csv")) {
 activityData <- read.csv("activity.csv")
 activityData <- mutate(activityData,
                        date = ymd(date))
-
-summary(activityData)
-```
-
-```
-##      steps             date               interval     
-##  Min.   :  0.00   Min.   :2012-10-01   Min.   :   0.0  
-##  1st Qu.:  0.00   1st Qu.:2012-10-16   1st Qu.: 588.8  
-##  Median :  0.00   Median :2012-10-31   Median :1177.5  
-##  Mean   : 37.38   Mean   :2012-10-31   Mean   :1177.5  
-##  3rd Qu.: 12.00   3rd Qu.:2012-11-15   3rd Qu.:1766.2  
-##  Max.   :806.00   Max.   :2012-11-30   Max.   :2355.0  
-##  NA's   :2304
 ```
 
 ## What is mean total number of steps taken per day?
@@ -63,8 +50,8 @@ plot(activityDataPerDay$date, activityDataPerDay$totsteps, type = "h",
 abline(h = meanTotSteps, col = "blue", lty = 2)
 abline(h = medianTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
-       legend = c(paste("Mean:", format(meanTotSteps, digits = 0, scientific = FALSE)), 
-                  paste("Median:", format(medianTotSteps, digits = 0, scientific = FALSE))))
+       legend = c(paste("Mean:", format(meanTotSteps, digits = 0, scientific = FALSE), "steps"), 
+                  paste("Median:", format(medianTotSteps, digits = 0, scientific = FALSE), "steps")))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -121,10 +108,10 @@ meanImputedTotSteps <- mean(imputedActivityDataPerDay$totsteps)
 medianImputedTotSteps <- median(imputedActivityDataPerDay$totsteps)
 ```
 
-The histogram shows the imputed total number of steps per day. The overall mean 
+The histogram shows the new total number of steps per day. The overall mean 
 (**10766 steps**) and 
 median (**10766 steps**) 
-are shown with a horizontal blue/red dashed line.
+are again shown with a horizontal blue/red dashed line.
 
 
 ```r
@@ -133,15 +120,16 @@ plot(imputedActivityDataPerDay$date, imputedActivityDataPerDay$totsteps, type = 
 abline(h = meanImputedTotSteps, col = "blue", lty = 2)
 abline(h = medianImputedTotSteps, col = "red", lty = 2)
 legend("topright", col = c("blue", "red"), lty = 2,
-       legend = c(paste("Mean:", format(meanImputedTotSteps, digits = 0, scientific = FALSE)), 
-                  paste("Median:", format(medianImputedTotSteps, digits = 0, scientific = FALSE))))
+       legend = c(paste("Mean:", format(meanImputedTotSteps, digits = 0, scientific = FALSE), "steps"), 
+                  paste("Median:", format(medianImputedTotSteps, digits = 0, scientific = FALSE), "steps")))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
-If we compare the imputed results with the results of the initial data set, 
-we see that the total number of steps has increased in the first 2 quantiles; 
-the reason is (most likely) that data was missing in the nighttime hours.
+If we compare the results with the imputed data with the results of the initial data set, 
+we see that the total number of steps has increased in the first 2 quantiles 
+(being the first half of the day); the reason being (most likely) that data was 
+missing in the nighttime hours.
 
 
 ```r
@@ -166,8 +154,9 @@ summary(imputedActivityDataPerDay$totsteps)
 
 The compare the activity patterns between weekdays and weekends, a new factor
 variable is added to the data set with values "weekend" / "weekday" (depending
-on whether the day is a weekday or a weekend) and 2 subsets are created, one for
-each factor level.
+on whether the day is a weekday or a weekend). The data is grouped by day and the
+new factor variable and aggregated by averaging the number of steps.
+Finally 2 subsets are created, one for weekdays and one for weekends.
 
 
 ```r
@@ -183,7 +172,7 @@ imputedActivityDataPerIntervalWeekend <- subset(imputedActivityDataPerInterval, 
 
 If we plot the activity on weekdays compared to the activity on weekends we see
 that the activity increases later on weekends than on weekdays (people staying 
-longer in bed ;>)) but is higher during the day.
+longer in bed ;>)) but is higher during the day (people being more active).
 
 
 ```r
@@ -202,22 +191,3 @@ with(imputedActivityDataPerIntervalWeekend,
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
-
-
-```r
-summary(imputedActivityDataPerIntervalWeekday$meanSteps)
-```
-
-```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.000   2.247  25.803  35.611  50.854 230.378
-```
-
-```r
-summary(imputedActivityDataPerIntervalWeekend$meanSteps)
-```
-
-```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.000   1.241  32.340  42.366  74.654 166.639
-```
